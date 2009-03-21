@@ -38,11 +38,11 @@ namespace Streamlet.xlFlashPlayer
             this.totalTime = new System.Windows.Forms.Label();
             this.curTime = new System.Windows.Forms.Label();
             this.playPause = new System.Windows.Forms.Button();
+            this.about = new System.Windows.Forms.Button();
             this.stop = new System.Windows.Forms.Button();
+            this.openFile = new System.Windows.Forms.Button();
             this.timer = new System.Windows.Forms.Timer(this.components);
             this.axShockwaveFlash = new AxShockwaveFlashObjects.AxShockwaveFlash();
-            this.openFile = new System.Windows.Forms.Button();
-            this.about = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar)).BeginInit();
             this.panel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.axShockwaveFlash)).BeginInit();
@@ -130,6 +130,21 @@ namespace Streamlet.xlFlashPlayer
             this.playPause.UseVisualStyleBackColor = false;
             this.playPause.Click += new System.EventHandler(this.playPause_Click);
             // 
+            // about
+            // 
+            this.about.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.about.BackColor = System.Drawing.SystemColors.Control;
+            this.about.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.about.Font = new System.Drawing.Font("Webdings", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(2)));
+            this.about.Location = new System.Drawing.Point(268, 0);
+            this.about.Name = "about";
+            this.about.Size = new System.Drawing.Size(24, 24);
+            this.about.TabIndex = 5;
+            this.about.Text = "i";
+            this.about.UseVisualStyleBackColor = false;
+            this.about.Click += new System.EventHandler(this.about_Click);
+            // 
             // stop
             // 
             this.stop.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
@@ -145,6 +160,22 @@ namespace Streamlet.xlFlashPlayer
             this.stop.Text = "<";
             this.stop.UseVisualStyleBackColor = false;
             this.stop.Click += new System.EventHandler(this.stop_Click);
+            // 
+            // openFile
+            // 
+            this.openFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)));
+            this.openFile.BackColor = System.Drawing.SystemColors.Control;
+            this.openFile.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.openFile.Font = new System.Drawing.Font("Wingdings", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(2)));
+            this.openFile.ForeColor = System.Drawing.Color.Black;
+            this.openFile.Location = new System.Drawing.Point(0, 0);
+            this.openFile.Name = "openFile";
+            this.openFile.Size = new System.Drawing.Size(24, 24);
+            this.openFile.TabIndex = 1;
+            this.openFile.Text = "1";
+            this.openFile.UseVisualStyleBackColor = false;
+            this.openFile.Click += new System.EventHandler(this.openFile_Click);
             // 
             // timer
             // 
@@ -163,37 +194,6 @@ namespace Streamlet.xlFlashPlayer
             this.axShockwaveFlash.Size = new System.Drawing.Size(292, 248);
             this.axShockwaveFlash.TabIndex = 0;
             this.axShockwaveFlash.TabStop = false;
-            // 
-            // openFile
-            // 
-            this.openFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)));
-            this.openFile.BackColor = System.Drawing.SystemColors.Control;
-            this.openFile.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.openFile.Font = new System.Drawing.Font("Wingdings", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(2)));
-            this.openFile.ForeColor = System.Drawing.Color.Black;
-            this.openFile.Location = new System.Drawing.Point(0, 0);
-            this.openFile.Name = "openFile";
-            this.openFile.Size = new System.Drawing.Size(24, 24);
-            this.openFile.TabIndex = 1;
-            this.openFile.Text = "1";
-            this.openFile.UseVisualStyleBackColor = false;
-            this.openFile.Click += new System.EventHandler(this.openFile_Click);
-            // 
-            // about
-            // 
-            this.about.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)));
-            this.about.BackColor = System.Drawing.SystemColors.Control;
-            this.about.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.about.Font = new System.Drawing.Font("Webdings", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(2)));
-            this.about.Location = new System.Drawing.Point(268, 0);
-            this.about.Name = "about";
-            this.about.Size = new System.Drawing.Size(24, 24);
-            this.about.TabIndex = 5;
-            this.about.Text = "i";
-            this.about.UseVisualStyleBackColor = false;
-            this.about.Click += new System.EventHandler(this.about_Click);
             // 
             // MainForm
             // 

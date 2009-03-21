@@ -205,9 +205,9 @@ namespace Streamlet.xlFlashPlayer
 
         private void MainForm_SizeChanged(object sender, EventArgs e)
         {
-            if (this.Width < 160)
+            if (this.Width < 184)
             {
-                this.Width = 160;
+                this.Width = 184;
             }
 
             if (this.Height < 60)
