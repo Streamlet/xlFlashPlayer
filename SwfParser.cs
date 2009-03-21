@@ -162,7 +162,7 @@ namespace Streamlet.xlFlashPlayer
                 byte[] rect = new byte[(nbits * 4 + 5) / 8 + ((nbits * 4 + 5) % 8 > 0 ? 1 : 0)];
                 rect[0] = rect0;
                 fs.Read(rect, 1, rect.Length - 1);
-                Bits bits = new Bits();
+                BitsValue bits = new BitsValue();
                 foreach (byte b in rect)
                 {
                     bits.Append(b);
@@ -178,7 +178,7 @@ namespace Streamlet.xlFlashPlayer
                 // 处理帧速信息
                 byte[] rate = new byte[2];
                 fs.Read(rate, 0, rate.Length);
-                _frameRate = rate[1] * 256 + rate[0];
+                _frameRate = ((uint)rate[1] + (uint)rate[0] / 256.0);
 
                 // 处理总帧数信息
                 byte[] count = new byte[2];

@@ -10,7 +10,7 @@ namespace Streamlet.xlFlashPlayer
     /// 可以往数里加入一个位，加入一个字节，加入一个双字，
     /// 之后可以读出其中任一位，或者取出其中某几位。
     /// </summary>
-    public class Bits
+    public class BitsValue
     {
         /// <summary>
         /// 存储数据。以 uint 为载体。
@@ -39,7 +39,7 @@ namespace Streamlet.xlFlashPlayer
         /// <summary>
         /// 构造
         /// </summary>
-        public Bits()
+        public BitsValue()
         {
             _len = 0;
         }
@@ -74,7 +74,7 @@ namespace Streamlet.xlFlashPlayer
         }
 
         /// <summary>
-        /// 向数中加入 8 个位（1 字节）
+        /// 向数中加入 8 个位(1 字节)
         /// </summary>
         /// <param name="byteData">要加入的字节</param>
         public void Append(byte byteData)
@@ -104,7 +104,7 @@ namespace Streamlet.xlFlashPlayer
         }
 
         /// <summary>
-        /// 向数中加入 32 个位（1 双字）
+        /// 向数中加入 32 个位(1 双字)
         /// </summary>
         /// <param name="uintData">要加入的双字节数据</param>
         public void Append(uint uintData)
