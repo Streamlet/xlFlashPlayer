@@ -149,7 +149,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "xlFlashPlayer 1.0 beta1 - by Streamlet";
+            this.Text = "xlFlashPlayer 1.0 beta1";
             this.Load += new System.EventHandler(this.MainForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.trackBar)).EndInit();
             this.panel.ResumeLayout(false);

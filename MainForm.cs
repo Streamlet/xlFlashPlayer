@@ -75,7 +75,7 @@ namespace Streamlet.xlFlashPlayer
             try
             {
                 SwfParser sp = new SwfParser();
-                if (!sp.ParseFile(openFileDialog.FileName))
+                if (!sp.ParseSwfHeader(openFileDialog.FileName))
                 {
                     MessageBox.Show("您所选的文件不是一个有效的 Flash 文件。", "错误",
                         MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
