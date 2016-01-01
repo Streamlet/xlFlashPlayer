@@ -14,15 +14,17 @@ namespace Streamlet.xlFlashPlayer
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //if (args.Length > 0)
-            //{
-            //    Application.Run(new MainForm(args[0]));
-            //}
-            //else
-            //{
+
             try
             {
-                Application.Run(new MainForm());
+                if (args.Length > 0)
+                {
+                    Application.Run(new MainForm(args[0]));
+                }
+                else
+                {
+                    Application.Run(new MainForm());
+                }
             }
             catch
             {

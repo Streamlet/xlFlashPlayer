@@ -17,12 +17,12 @@ namespace Streamlet.xlFlashPlayer
             InitializeComponent();
         }
 
-        //public MainForm(string swfFilePath)
-        //{
-        //    InitializeComponent();
-        //
-        //    preLoadFilePath = swfFilePath;
-        //}
+        public MainForm(string swfFilePath)
+        {
+            InitializeComponent();
+        
+            preLoadFilePath = swfFilePath;
+        }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
@@ -108,7 +108,7 @@ namespace Streamlet.xlFlashPlayer
                 {
                     totalTime.Text = "";
                     curTime.Text = "";
-                    MessageBox.Show("这是个压缩的 Flash 文件，无法获取宽度和高度。请自行调整窗口大小以便观看。", "提示",
+                    MessageBox.Show("这是个压缩的 Flash 文件，暂时无法获取宽度和高度。请自行调整窗口大小以便观看。", "提示",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
@@ -122,11 +122,11 @@ namespace Streamlet.xlFlashPlayer
                     this.CenterToScreen();
                 }
 
-                axShockwaveFlash.Movie = openFileDialog.FileName;
+                axShockwaveFlash.Movie = swfFilePath;
                 trackBar.Minimum = 1;
                 axShockwaveFlash.Loop = false;
                 axShockwaveFlash.Play();
-                
+
                 trackBar.Maximum = axShockwaveFlash.TotalFrames;
                 playPause.Enabled = true;
                 trackBar.Enabled = true;
@@ -219,10 +219,10 @@ namespace Streamlet.xlFlashPlayer
         private void about_Click(object sender, EventArgs e)
         {
             MessageBox.Show(
-                "溪流 Flash 播放器 v1.0 beta2\r\n\r\n\r\n"
+                "溪流 Flash 播放器 v1.0 beta3\r\n\r\n\r\n"
                     + "有任何建议意见欢迎来邮相告^_^\r\n\r\n"
-                    + "http://www.streamlet.com.cn/\r\n"
-                    + "kejinjin@gmail.com\r\n",
+                    + "http://www.streamlet.org/\r\n"
+                    + "streamlet@outlook.com\r\n",
                 "关于溪流 Flash 播放器",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information);

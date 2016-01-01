@@ -206,7 +206,7 @@ namespace Streamlet.xlFlashPlayer
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "溪流 Flash 播放器 v1.0 beta2";
+            this.Text = "溪流 Flash 播放器 v1.0 beta3";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.SizeChanged += new System.EventHandler(this.MainForm_SizeChanged);
             ((System.ComponentModel.ISupportInitialize)(this.trackBar)).EndInit();
