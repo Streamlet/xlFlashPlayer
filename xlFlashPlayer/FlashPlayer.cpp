@@ -12,6 +12,7 @@
 
 #include "FlashPlayer.h"
 #include "SwfParser.h"
+#include "resource.h"
 
 #define CONTROL_PANEL_HEIGHT 25
 
@@ -97,6 +98,7 @@ void FlashPlayer::Load(LPCTSTR lpFile, bool bCenterWindow)
 
 void FlashPlayer::Unload()
 {
+    m_ControlPanel.SetFrameInfo(0, 0);
     m_pFlashPlayer->put_Movie(nullptr);
     m_strFile.Clear();
     m_szFlash = xl::Size(0, 0);
@@ -151,6 +153,10 @@ void FlashPlayer::Relayout()
 
 LRESULT FlashPlayer::OnCreate(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL &bHandled)
 {
+    HICON hIcon = LoadIcon(GetModuleHandle(nullptr), MAKEINTRESOURCE(IDI_ICON_APP));
+    SetIcon(hIcon);
+    SetIcon(hIcon, FALSE);
+
     m_ControlPanel.Create(m_hWnd, 0, 0, 0, 0, WS_VISIBLE | WS_CHILD, 0, L"xlFlashController", nullptr, (HMENU)ID_CONTROL_PANEL);
     Relayout();
     return 0;

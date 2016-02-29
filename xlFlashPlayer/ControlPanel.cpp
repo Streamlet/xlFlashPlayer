@@ -64,6 +64,9 @@ void ControlPanel::SetFrameInfo(int nFrameCount, int nFrameRate)
     m_nFrameCount = nFrameRate;
 
     m_tbSlider.SetRange(0, m_nFrameCount);
+    m_btnPlayPause.EnableWindow(m_nFrameCount > 0);
+    m_btnStop.EnableWindow(m_nFrameCount > 0);
+    m_tbSlider.EnableWindow(m_nFrameCount > 0);
 }
 
 void ControlPanel::SetCurrentFrame(int nFrame)
@@ -166,7 +169,9 @@ LRESULT ControlPanel::OnCreate(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPara
     m_lblTimePlayed.SetWindowText(L"00:00:00");
     m_lblTimeRemain.SetWindowText(L"00:00:00");
 
+    m_btnPlayPause.EnableWindow(FALSE);
     m_btnStop.EnableWindow(FALSE);
+    m_tbSlider.EnableWindow(FALSE);
 
     Relayout();
 
