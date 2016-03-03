@@ -10,11 +10,12 @@
 //------------------------------------------------------------------------------
 
 
+#include <xl/Windows/GUI/xlDPI.h>
 #include "FlashPlayer.h"
 #include "SwfParser.h"
 #include "resource.h"
 
-#define CONTROL_PANEL_HEIGHT 25
+#define CONTROL_PANEL_HEIGHT XL_DPI_Y(25)
 
 enum
 {
@@ -107,7 +108,7 @@ void FlashPlayer::Unload()
 void FlashPlayer::Play()
 {
     m_ControlPanel.SetPlaytatus(PLAY_STATUS_PLAYING);
-    m_Timer.Set(1000, xl::Windows::TimerCallback(this, &FlashPlayer::OnTimer));
+    m_Timer.Set(200, xl::Windows::TimerCallback(this, &FlashPlayer::OnTimer));
     m_pFlashPlayer->raw_Play();
 }
 
@@ -132,8 +133,8 @@ void FlashPlayer::ResizeForFlash()
     GetWindowRect(&rcWindow);
     RECT rcClient = {};
     GetClientRect(&rcClient);
-    rcWindow.right = rcWindow.left + m_szFlash.Width() + (rcWindow.right - rcWindow.left) - (rcClient.right - rcClient.left);
-    rcWindow.bottom = rcWindow.top + m_szFlash.Height() + CONTROL_PANEL_HEIGHT + (rcWindow.bottom - rcWindow.top) - (rcClient.bottom - rcClient.top);
+    rcWindow.right = rcWindow.left + XL_DPI_X(m_szFlash.Width()) + (rcWindow.right - rcWindow.left) - (rcClient.right - rcClient.left);
+    rcWindow.bottom = rcWindow.top + XL_DPI_Y(m_szFlash.Height()) + CONTROL_PANEL_HEIGHT + (rcWindow.bottom - rcWindow.top) - (rcClient.bottom - rcClient.top);
     MoveWindow(&rcWindow);
 }
 

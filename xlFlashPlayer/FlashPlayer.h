@@ -14,7 +14,7 @@
 
 
 #include <xl/Windows/COM/Objects/xlFlashPlayer.h>
-#include <xl/Windows/GUI/xlWindow.h>
+#include <xl/Windows/GUI/xlDialog.h>
 #include <xl/Common/Math/xlMathBase.h>
 #include <xl/Common/String/xlString.h>
 #include <xl/Windows/Timer/xlTimer.h>

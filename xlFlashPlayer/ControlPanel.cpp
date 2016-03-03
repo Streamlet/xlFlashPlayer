@@ -10,16 +10,17 @@
 //------------------------------------------------------------------------------
 
 
+#include <xl/Windows/GUI/xlDPI.h>
 #include "ControlPanel.h"
 #include <stdio.h>
 
-#define BUTTON_SIZE 25
+#define BUTTON_SIZE     XL_DPI_X(25)
 
-#define CHAR_OPEN   L"1"
-#define CHAR_PLAY   L"4"
-#define CHAR_PAUSE  L";"
-#define CHAR_STOP   L"<"
-#define CHAR_ABOUT  L"i"
+#define CHAR_OPEN       L"1"
+#define CHAR_PLAY       L"4"
+#define CHAR_PAUSE      L";"
+#define CHAR_STOP       L"<"
+#define CHAR_ABOUT      L"i"
 
 enum
 {
@@ -48,8 +49,8 @@ ControlPanel::ControlPanel() : m_hHost(nullptr), m_hFontWingdings(nullptr), m_hF
 
     AppendMsgHandler(WM_HSCROLL, MsgHandler(this, &ControlPanel::OnSliderScroll));
 
-    m_hFontWingdings = CreateFont(-16, 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, DEFAULT_PITCH | FF_DONTCARE, L"Wingdings");
-    m_hFontWebdings = CreateFont(-16, 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, DEFAULT_PITCH | FF_DONTCARE, L"Webdings");
+    m_hFontWingdings = CreateFont(XL_DPI_Y(-16), 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, DEFAULT_PITCH | FF_DONTCARE, L"Wingdings");
+    m_hFontWebdings = CreateFont(XL_DPI_Y(-16), 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, DEFAULT_PITCH | FF_DONTCARE, L"Webdings");
 }
 
 ControlPanel::~ControlPanel()
@@ -104,11 +105,11 @@ void ControlPanel::Relayout()
     m_btnStop.MoveWindow(&rc);
 
     rc.left = rc.right;
-    rc.right = rc.left + 64;
+    rc.right = rc.left + XL_DPI_X(64);
     m_lblTimePlayed.MoveWindow(&rc);
 
     rc.left = rc.right;
-    rc.right = rcControl.right - BUTTON_SIZE - 64;
+    rc.right = rcControl.right - BUTTON_SIZE - XL_DPI_X(64);
     m_tbSlider.MoveWindow(&rc);
 
     rc.left = rc.right;
@@ -148,13 +149,13 @@ LRESULT ControlPanel::OnCreate(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPara
 {
     m_hHost = GetParent();
 
-    m_btnOpen.Create(m_hWnd, ID_BUTTON_OPEN, 0, 0, 0, 0);
-    m_btnPlayPause.Create(m_hWnd, ID_BUTTON_PLAY_PAUSE, 0, 0, 0, 0);
-    m_btnStop.Create(m_hWnd, ID_BUTTON_STOP, 0, 0, 0, 0);
-    m_btnAbout.Create(m_hWnd, ID_BUTTON_ABOUT, 0, 0, 0, 0);
+    m_btnOpen.Create(m_hWnd, ID_BUTTON_OPEN, 0, 0, 0, 0, WS_CHILD | WS_VISIBLE);
+    m_btnPlayPause.Create(m_hWnd, ID_BUTTON_PLAY_PAUSE, 0, 0, 0, 0, WS_CHILD | WS_VISIBLE);
+    m_btnStop.Create(m_hWnd, ID_BUTTON_STOP, 0, 0, 0, 0, WS_CHILD | WS_VISIBLE);
+    m_btnAbout.Create(m_hWnd, ID_BUTTON_ABOUT, 0, 0, 0, 0, WS_CHILD | WS_VISIBLE);
     m_lblTimePlayed.Create(m_hWnd, ID_STATIC, 0, 0, 0, 0);
     m_lblTimeRemain.Create(m_hWnd, ID_STATIC, 0, 0, 0, 0);
-    m_tbSlider.Create(m_hWnd, ID_SLIDER, 0, 0, 0, 0);
+    m_tbSlider.Create(m_hWnd, ID_SLIDER, 0, 0, 0, 0, WS_CHILD | WS_VISIBLE | TBS_NOTICKS);
 
     m_btnOpen.SetFont(m_hFontWingdings);
     m_btnPlayPause.SetFont(m_hFontWebdings);
