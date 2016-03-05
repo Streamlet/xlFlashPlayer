@@ -13,6 +13,7 @@
 #include <Windows.h>
 #include <xl/Windows/GUI/xlDPI.h>
 #include "FlashPlayer.h"
+#include "Log.h"
 
 
 int APIENTRY wWinMain(_In_ HINSTANCE     hInstance,
@@ -20,7 +21,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE     hInstance,
     _In_ LPWSTR        lpCmdLine,
     _In_ int           nCmdShow)
 {
-    UNREFERENCED_PARAMETER(hPrevInstance);
+    XL_LOG_INFO_FUNCTION();
 
     FlashPlayer fp;
 

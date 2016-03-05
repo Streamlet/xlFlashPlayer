@@ -13,6 +13,7 @@
 #include <xl/Windows/GUI/xlDPI.h>
 #include "ControlPanel.h"
 #include <stdio.h>
+#include "Log.h"
 
 #define BUTTON_SIZE     XL_DPI_X(30)
 
@@ -38,6 +39,8 @@ enum
 
 ControlPanel::ControlPanel() : m_hHost(nullptr), m_hFontWingdings(nullptr), m_hFontWebdings(nullptr), m_ePlayStatus(PLAY_STATUS_STOPPED), m_nFrameRate(0), m_nFrameCount(0)
 {
+    XL_LOG_INFO_FUNCTION();
+
     AppendMsgHandler(WM_CREATE, MsgHandler(this, &ControlPanel::OnCreate));
     AppendMsgHandler(WM_ERASEBKGND, MsgHandler(this, &ControlPanel::OnEraseBkgnd));
     AppendMsgHandler(WM_SIZE, MsgHandler(this, &ControlPanel::OnSize));
@@ -55,12 +58,16 @@ ControlPanel::ControlPanel() : m_hHost(nullptr), m_hFontWingdings(nullptr), m_hF
 
 ControlPanel::~ControlPanel()
 {
+    XL_LOG_INFO_FUNCTION();
+
     DeleteObject(m_hFontWebdings);
     DeleteObject(m_hFontWingdings);
 }
 
-void ControlPanel::SetFrameInfo(int nFrameCount, int nFrameRate)
+void ControlPanel::SetFrameInfo(int nFrameRate, int nFrameCount)
 {
+    XL_LOG_INFO_FUNCTION();
+
     m_nFrameRate = nFrameCount;
     m_nFrameCount = nFrameRate;
 
@@ -72,23 +79,31 @@ void ControlPanel::SetFrameInfo(int nFrameCount, int nFrameRate)
 
 void ControlPanel::SetCurrentFrame(int nFrame)
 {
+    XL_LOG_VERBOSE_FUNCTION();
+
     m_tbSlider.SetPos(nFrame);
     RefreshProgress();
 }
 
 PlayStatus ControlPanel::GetPlaytatus()
 {
+    XL_LOG_INFO_FUNCTION();
+
     return m_ePlayStatus;
 }
 
 void ControlPanel::SetPlaytatus(PlayStatus eStatus)
 {
+    XL_LOG_INFO_FUNCTION();
+
     m_ePlayStatus = eStatus;
     UpdatePlayStatus();
 }
 
 void ControlPanel::Relayout()
 {
+    XL_LOG_VERBOSE_FUNCTION();
+
     RECT rcControl = {};
     GetClientRect(&rcControl);
 
@@ -126,6 +141,8 @@ void ControlPanel::Relayout()
 
 void ControlPanel::RefreshProgress()
 {
+    XL_LOG_VERBOSE_FUNCTION();
+
     int nPos = m_tbSlider.GetPos();
     int nSecondPlayed = nPos * 256 / m_nFrameRate;
     WCHAR szTimePlayed[20] = {}, szTimeRemain[20] = {};
@@ -137,6 +154,8 @@ void ControlPanel::RefreshProgress()
 
 void ControlPanel::UpdatePlayStatus()
 {
+    XL_LOG_INFO_FUNCTION();
+
     m_btnPlayPause.SetWindowText(m_ePlayStatus == PLAY_STATUS_PLAYING ? CHAR_PAUSE : CHAR_PLAY);
 
     if (m_ePlayStatus == PLAY_STATUS_STOPPED)
@@ -149,11 +168,13 @@ void ControlPanel::UpdatePlayStatus()
 
 LRESULT ControlPanel::OnCreate(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL &bHandled)
 {
+    XL_LOG_INFO_FUNCTION();
+
     m_hHost = GetParent();
 
     m_lblTimePlayed.Create(m_hWnd, ID_STATIC, 0, 0, 0, 0, WS_CHILD | WS_VISIBLE | SS_CENTER);
     m_lblTimeRemain.Create(m_hWnd, ID_STATIC, 0, 0, 0, 0, WS_CHILD | WS_VISIBLE | SS_CENTER);
-    m_tbSlider.Create(m_hWnd, ID_SLIDER, 0, 0, 0, 0, WS_CHILD | WS_VISIBLE | TBS_NOTICKS | TBS_FIXEDLENGTH);
+    m_tbSlider.Create(m_hWnd, ID_SLIDER, 0, 0, 0, 0, WS_CHILD | WS_VISIBLE | TBS_NOTICKS);
     m_btnOpen.Create(m_hWnd, ID_BUTTON_OPEN, 0, 0, 0, 0, WS_CHILD | WS_VISIBLE);
     m_btnPlayPause.Create(m_hWnd, ID_BUTTON_PLAY_PAUSE, 0, 0, 0, 0, WS_CHILD | WS_VISIBLE);
     m_btnStop.Create(m_hWnd, ID_BUTTON_STOP, 0, 0, 0, 0, WS_CHILD | WS_VISIBLE);
@@ -183,6 +204,8 @@ LRESULT ControlPanel::OnCreate(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPara
 
 LRESULT ControlPanel::OnEraseBkgnd(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL &bHandled)
 {
+    XL_LOG_INFO_FUNCTION();
+
     HDC hDC = (HDC)wParam;
 
     RECT rect;
@@ -198,12 +221,16 @@ LRESULT ControlPanel::OnEraseBkgnd(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
 
 LRESULT ControlPanel::OnSize(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL &bHandled)
 {
+    XL_LOG_INFO_FUNCTION();
+
     Relayout();
     return 0;
 }
 
 LRESULT ControlPanel::OnButtonOpen(HWND hWnd, WORD wID, WORD wCode, HWND hControl, BOOL &bHandled)
 {
+    XL_LOG_INFO_FUNCTION();
+
     WORD wSelfID = GetDlgCtrlID(m_hWnd);
     NMHDR n = { m_hWnd, wSelfID, CPNM_OPEN };
     ::SendMessage(m_hHost, WM_NOTIFY, wSelfID, (LPARAM)&n);
@@ -213,6 +240,8 @@ LRESULT ControlPanel::OnButtonOpen(HWND hWnd, WORD wID, WORD wCode, HWND hContro
 
 LRESULT ControlPanel::OnButtonPlayPause(HWND hWnd, WORD wID, WORD wCode, HWND hControl, BOOL &bHandled)
 {
+    XL_LOG_INFO_FUNCTION();
+
     PlayStatus eNewStatus = m_ePlayStatus == PLAY_STATUS_PLAYING ? PLAY_STATUS_PAUSED : PLAY_STATUS_PLAYING;
 
     if (eNewStatus == m_ePlayStatus)
@@ -232,6 +261,8 @@ LRESULT ControlPanel::OnButtonPlayPause(HWND hWnd, WORD wID, WORD wCode, HWND hC
 
 LRESULT ControlPanel::OnButtonStop(HWND hWnd, WORD wID, WORD wCode, HWND hControl, BOOL &bHandled)
 {
+    XL_LOG_INFO_FUNCTION();
+
     PlayStatus eNewStatus = m_ePlayStatus == PLAY_STATUS_PLAYING ? PLAY_STATUS_PAUSED : PLAY_STATUS_PLAYING;
 
     if (m_ePlayStatus == PLAY_STATUS_STOPPED)
@@ -251,6 +282,8 @@ LRESULT ControlPanel::OnButtonStop(HWND hWnd, WORD wID, WORD wCode, HWND hContro
 
 LRESULT ControlPanel::OnButtonAbout(HWND hWnd, WORD wID, WORD wCode, HWND hControl, BOOL &bHandled)
 {
+    XL_LOG_INFO_FUNCTION();
+
     WORD wSelfID = GetDlgCtrlID(m_hWnd);
     NMHDR n = { m_hWnd, wSelfID, CPNM_ABOUT };
     ::SendMessage(m_hHost, WM_NOTIFY, wSelfID, (LPARAM)&n);
@@ -260,6 +293,8 @@ LRESULT ControlPanel::OnButtonAbout(HWND hWnd, WORD wID, WORD wCode, HWND hContr
 
 LRESULT ControlPanel::OnSliderScroll(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL &bHandled)
 {
+    XL_LOG_INFO_FUNCTION();
+
     RefreshProgress();
 
     int nPos = m_tbSlider.GetPos();

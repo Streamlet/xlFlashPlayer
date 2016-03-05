@@ -14,6 +14,7 @@
 #include "FlashPlayer.h"
 #include "SwfParser.h"
 #include "resource.h"
+#include "Log.h"
 
 #define CONTROL_PANEL_HEIGHT XL_DPI_Y(30)
 
@@ -28,6 +29,8 @@ enum
 
 FlashPlayer::FlashPlayer()
 {
+    XL_LOG_INFO_FUNCTION();
+
     AppendMsgHandler(WM_CREATE, MsgHandler(this, &FlashPlayer::OnCreate));
     AppendMsgHandler(WM_ERASEBKGND, MsgHandler(this, &FlashPlayer::OnSize));
     AppendMsgHandler(WM_WINDOWPOSCHANGING, MsgHandler(this, &FlashPlayer::OnWindowPosChanging));
@@ -43,11 +46,13 @@ FlashPlayer::FlashPlayer()
 
 FlashPlayer::~FlashPlayer()
 {
-
+    XL_LOG_INFO_FUNCTION();
 }
 
 bool FlashPlayer::Create(HWND hParent, int x, int y, int nWidth, int nHeight, DWORD dwStyle)
 {
+    XL_LOG_INFO_FUNCTION();
+
     if (!xl::Windows::Window::Create(hParent, x, y, nWidth, nHeight, dwStyle, 0, L"xlFlashPlayer", L"溪流 Flash 播放器 v2.0", nullptr))
     {
         return false;
@@ -63,6 +68,8 @@ bool FlashPlayer::Create(HWND hParent, int x, int y, int nWidth, int nHeight, DW
 
 void FlashPlayer::Load(LPCTSTR lpFile, bool bCenterWindow)
 {
+    XL_LOG_INFO_FUNCTION();
+
     SwfInfo swf = {};
 
     if (!ParseSwfFile(lpFile, swf))
@@ -100,6 +107,8 @@ void FlashPlayer::Load(LPCTSTR lpFile, bool bCenterWindow)
 
 void FlashPlayer::Unload()
 {
+    XL_LOG_INFO_FUNCTION();
+
     m_ControlPanel.SetFrameInfo(0, 0);
     m_pFlashPlayer->put_Movie(nullptr);
     m_strFile.Clear();
@@ -108,6 +117,8 @@ void FlashPlayer::Unload()
 
 void FlashPlayer::Play()
 {
+    XL_LOG_INFO_FUNCTION();
+
     m_ControlPanel.SetPlaytatus(PLAY_STATUS_PLAYING);
     m_Timer.Set(200, xl::Windows::TimerCallback(this, &FlashPlayer::OnTimer));
     m_pFlashPlayer->raw_Play();
@@ -115,6 +126,8 @@ void FlashPlayer::Play()
 
 void FlashPlayer::Pause()
 {
+    XL_LOG_INFO_FUNCTION();
+
     m_ControlPanel.SetPlaytatus(PLAY_STATUS_PAUSED);
     m_pFlashPlayer->raw_StopPlay();
     m_Timer.Kill();
@@ -122,6 +135,8 @@ void FlashPlayer::Pause()
 
 void FlashPlayer::Stop()
 {
+    XL_LOG_INFO_FUNCTION();
+
     m_ControlPanel.SetPlaytatus(PLAY_STATUS_STOPPED);
     m_pFlashPlayer->raw_StopPlay();
     m_pFlashPlayer->raw_GotoFrame(0);
@@ -130,6 +145,8 @@ void FlashPlayer::Stop()
 
 void FlashPlayer::ResizeForFlash()
 {
+    XL_LOG_INFO_FUNCTION();
+
     RECT rcWindow = {};
     GetWindowRect(&rcWindow);
     RECT rcClient = {};
@@ -141,6 +158,8 @@ void FlashPlayer::ResizeForFlash()
 
 void FlashPlayer::Relayout()
 {
+    XL_LOG_VERBOSE_FUNCTION();
+
     RECT rcClient = {};
     GetClientRect(&rcClient);
 
@@ -155,6 +174,8 @@ void FlashPlayer::Relayout()
 
 LRESULT FlashPlayer::OnCreate(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL &bHandled)
 {
+    XL_LOG_INFO_FUNCTION();
+
     HICON hIcon = LoadIcon(GetModuleHandle(nullptr), MAKEINTRESOURCE(IDI_ICON_APP));
     SetIcon(hIcon);
     SetIcon(hIcon, FALSE);
@@ -166,11 +187,15 @@ LRESULT FlashPlayer::OnCreate(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 
 LRESULT FlashPlayer::OnEraseBkgnd(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL &bHandled)
 {
+    XL_LOG_VERBOSE_FUNCTION();
+
     return TRUE;
 }
 
 LRESULT FlashPlayer::OnWindowPosChanging(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL &bHandled)
 {
+    XL_LOG_VERBOSE_FUNCTION();
+
     WINDOWPOS *pPos = (WINDOWPOS *)lParam;
     if ((pPos->flags & SWP_NOSIZE) == 0)
     {
@@ -188,12 +213,16 @@ LRESULT FlashPlayer::OnWindowPosChanging(HWND hWnd, UINT uMsg, WPARAM wParam, LP
 
 LRESULT FlashPlayer::OnSize(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL &bHandled)
 {
+    XL_LOG_INFO_FUNCTION();
+
     Relayout();
     return 0;
 }
 
 void FlashPlayer::OnTimer(DWORD dwTime)
 {
+    XL_LOG_VERBOSE_FUNCTION();
+
     long lCurrentFrame = 0;
     m_pFlashPlayer->raw_CurrentFrame(&lCurrentFrame);
 
@@ -202,6 +231,8 @@ void FlashPlayer::OnTimer(DWORD dwTime)
 
 LRESULT FlashPlayer::OnOpen(HWND hWnd, LPNMHDR lpNMHDR, BOOL &bHandled)
 {
+    XL_LOG_INFO_FUNCTION();
+
     WCHAR szPath[MAX_PATH] = {};
     OPENFILENAME ofn =
     {
@@ -245,18 +276,24 @@ LRESULT FlashPlayer::OnOpen(HWND hWnd, LPNMHDR lpNMHDR, BOOL &bHandled)
 
 LRESULT FlashPlayer::OnPlay(HWND hWnd, LPNMHDR lpNMHDR, BOOL &bHandled)
 {
+    XL_LOG_INFO_FUNCTION();
+
     m_pFlashPlayer->raw_Play();
     return 0;
 }
 
 LRESULT FlashPlayer::OnPause(HWND hWnd, LPNMHDR lpNMHDR, BOOL &bHandled)
 {
+    XL_LOG_INFO_FUNCTION();
+
     m_pFlashPlayer->raw_Stop();
     return 0;
 }
 
 LRESULT FlashPlayer::OnStop(HWND hWnd, LPNMHDR lpNMHDR, BOOL &bHandled)
 {
+    XL_LOG_INFO_FUNCTION();
+
     m_pFlashPlayer->raw_Stop();
     m_pFlashPlayer->raw_GotoFrame(0);
     return 0;
@@ -264,6 +301,8 @@ LRESULT FlashPlayer::OnStop(HWND hWnd, LPNMHDR lpNMHDR, BOOL &bHandled)
 
 LRESULT FlashPlayer::OnGotoFrame(HWND hWnd, LPNMHDR lpNMHDR, BOOL &bHandled)
 {
+    XL_LOG_INFO_FUNCTION();
+
     NMGotoFrame *p = (NMGotoFrame *)lpNMHDR;
 
     bool bPlaying = m_ControlPanel.GetPlaytatus() == PLAY_STATUS_PLAYING;
@@ -285,6 +324,8 @@ LRESULT FlashPlayer::OnGotoFrame(HWND hWnd, LPNMHDR lpNMHDR, BOOL &bHandled)
 
 LRESULT FlashPlayer::OnAbout(HWND hWnd, LPNMHDR lpNMHDR, BOOL &bHandled)
 {
+    XL_LOG_INFO_FUNCTION();
+
     MessageBox(L"溪流 Flash 播放器 v2.0\r\n"
                L"\r\n"
                L"\r\n"
@@ -294,5 +335,6 @@ LRESULT FlashPlayer::OnAbout(HWND hWnd, LPNMHDR lpNMHDR, BOOL &bHandled)
                L"streamlet@outlook.com\r\n",
         L"关于溪流 Flash 播放器",
         MB_OK | MB_ICONINFORMATION);
+
     return 0;
 }

@@ -48,7 +48,7 @@ public:
     ~ControlPanel();
 
 public:
-    void SetFrameInfo(int nFrameCount, int nFrameRate);
+    void SetFrameInfo(int nFrameRate, int nFrameCount);
     void SetCurrentFrame(int nFrame);
     PlayStatus GetPlaytatus();
     void SetPlaytatus(PlayStatus eStatus);
