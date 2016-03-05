@@ -14,7 +14,7 @@
 #include "ControlPanel.h"
 #include <stdio.h>
 
-#define BUTTON_SIZE     XL_DPI_X(25)
+#define BUTTON_SIZE     XL_DPI_X(30)
 
 #define CHAR_OPEN       L"1"
 #define CHAR_PLAY       L"4"
@@ -49,8 +49,8 @@ ControlPanel::ControlPanel() : m_hHost(nullptr), m_hFontWingdings(nullptr), m_hF
 
     AppendMsgHandler(WM_HSCROLL, MsgHandler(this, &ControlPanel::OnSliderScroll));
 
-    m_hFontWingdings = CreateFont(XL_DPI_Y(-16), 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, DEFAULT_PITCH | FF_DONTCARE, L"Wingdings");
-    m_hFontWebdings = CreateFont(XL_DPI_Y(-16), 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, DEFAULT_PITCH | FF_DONTCARE, L"Webdings");
+    m_hFontWingdings = CreateFont(XL_DPI_Y(-18), 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, DEFAULT_PITCH | FF_DONTCARE, L"Wingdings");
+    m_hFontWebdings = CreateFont(XL_DPI_Y(-18), 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, DEFAULT_PITCH | FF_DONTCARE, L"Webdings");
 }
 
 ControlPanel::~ControlPanel()
@@ -104,18 +104,21 @@ void ControlPanel::Relayout()
     rc.right = rc.left + BUTTON_SIZE;
     m_btnStop.MoveWindow(&rc);
 
-    rc.left = rc.right;
-    rc.right = rc.left + XL_DPI_X(64);
-    m_lblTimePlayed.MoveWindow(&rc);
-
+    rc.top = rcControl.top + (rcControl.bottom - rcControl.top) / 8;
     rc.left = rc.right;
     rc.right = rcControl.right - BUTTON_SIZE - XL_DPI_X(64);
     m_tbSlider.MoveWindow(&rc);
 
     rc.left = rc.right;
     rc.right = rcControl.right - BUTTON_SIZE;
+    rc.top = rcControl.top;
+    rc.bottom = rc.top + (rcControl.bottom - rcControl.top) / 2;
+    m_lblTimePlayed.MoveWindow(&rc);
+    rc.top = rc.bottom;
+    rc.bottom = rcControl.bottom;
     m_lblTimeRemain.MoveWindow(&rc);
 
+    rc.top = rcControl.top;
     rc.left = rc.right;
     rc.right = rcControl.right;
     m_btnAbout.MoveWindow(&rc);
@@ -125,10 +128,9 @@ void ControlPanel::RefreshProgress()
 {
     int nPos = m_tbSlider.GetPos();
     int nSecondPlayed = nPos * 256 / m_nFrameRate;
-    int nSecondRemain = ((int)m_nFrameCount - nPos) * 256 / m_nFrameRate;
     WCHAR szTimePlayed[20] = {}, szTimeRemain[20] = {};
     swprintf_s(szTimePlayed, L"%02d:%02d:%02d", nSecondPlayed / 3600, nSecondPlayed % 3600 / 60, nSecondPlayed % 60);
-    swprintf_s(szTimeRemain, L"%02d:%02d:%02d", nSecondRemain / 3600, nSecondRemain % 3600 / 60, nSecondRemain % 60);
+    swprintf_s(szTimeRemain, L"%02d:%02d:%02d", m_nFrameCount / 3600, m_nFrameCount % 3600 / 60, m_nFrameCount % 60);
     m_lblTimePlayed.SetWindowText(szTimePlayed);
     m_lblTimeRemain.SetWindowText(szTimeRemain);
 }
@@ -149,13 +151,13 @@ LRESULT ControlPanel::OnCreate(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPara
 {
     m_hHost = GetParent();
 
+    m_lblTimePlayed.Create(m_hWnd, ID_STATIC, 0, 0, 0, 0, WS_CHILD | WS_VISIBLE | SS_CENTER);
+    m_lblTimeRemain.Create(m_hWnd, ID_STATIC, 0, 0, 0, 0, WS_CHILD | WS_VISIBLE | SS_CENTER);
+    m_tbSlider.Create(m_hWnd, ID_SLIDER, 0, 0, 0, 0, WS_CHILD | WS_VISIBLE | TBS_NOTICKS | TBS_FIXEDLENGTH);
     m_btnOpen.Create(m_hWnd, ID_BUTTON_OPEN, 0, 0, 0, 0, WS_CHILD | WS_VISIBLE);
     m_btnPlayPause.Create(m_hWnd, ID_BUTTON_PLAY_PAUSE, 0, 0, 0, 0, WS_CHILD | WS_VISIBLE);
     m_btnStop.Create(m_hWnd, ID_BUTTON_STOP, 0, 0, 0, 0, WS_CHILD | WS_VISIBLE);
     m_btnAbout.Create(m_hWnd, ID_BUTTON_ABOUT, 0, 0, 0, 0, WS_CHILD | WS_VISIBLE);
-    m_lblTimePlayed.Create(m_hWnd, ID_STATIC, 0, 0, 0, 0);
-    m_lblTimeRemain.Create(m_hWnd, ID_STATIC, 0, 0, 0, 0);
-    m_tbSlider.Create(m_hWnd, ID_SLIDER, 0, 0, 0, 0, WS_CHILD | WS_VISIBLE | TBS_NOTICKS);
 
     m_btnOpen.SetFont(m_hFontWingdings);
     m_btnPlayPause.SetFont(m_hFontWebdings);
@@ -181,6 +183,16 @@ LRESULT ControlPanel::OnCreate(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPara
 
 LRESULT ControlPanel::OnEraseBkgnd(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL &bHandled)
 {
+    HDC hDC = (HDC)wParam;
+
+    RECT rect;
+    GetClientRect(&rect);
+
+    SetDCBrushColor(hDC, GetSysColor(COLOR_3DFACE));
+    HBRUSH hBrush = (HBRUSH)GetStockObject(DC_BRUSH);
+
+    FillRect(hDC, &rect, hBrush);
+
     return TRUE;
 }
 

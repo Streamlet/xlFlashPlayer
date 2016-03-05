@@ -15,7 +15,7 @@
 #include "SwfParser.h"
 #include "resource.h"
 
-#define CONTROL_PANEL_HEIGHT XL_DPI_Y(25)
+#define CONTROL_PANEL_HEIGHT XL_DPI_Y(30)
 
 enum
 {
@@ -30,6 +30,7 @@ FlashPlayer::FlashPlayer()
 {
     AppendMsgHandler(WM_CREATE, MsgHandler(this, &FlashPlayer::OnCreate));
     AppendMsgHandler(WM_ERASEBKGND, MsgHandler(this, &FlashPlayer::OnSize));
+    AppendMsgHandler(WM_WINDOWPOSCHANGING, MsgHandler(this, &FlashPlayer::OnWindowPosChanging));
     AppendMsgHandler(WM_SIZE, MsgHandler(this, &FlashPlayer::OnSize));
 
     AppendNotifyMsgHandler(ID_CONTROL_PANEL, CPNM_OPEN, NotifyMsgHandler(this, &FlashPlayer::OnOpen));
@@ -158,7 +159,7 @@ LRESULT FlashPlayer::OnCreate(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
     SetIcon(hIcon);
     SetIcon(hIcon, FALSE);
 
-    m_ControlPanel.Create(m_hWnd, 0, 0, 0, 0, WS_VISIBLE | WS_CHILD, 0, L"xlFlashController", nullptr, (HMENU)ID_CONTROL_PANEL);
+    m_ControlPanel.Create(m_hWnd, 0, 0, 0, 0, WS_VISIBLE | WS_CHILD | WS_CLIPCHILDREN | WS_CLIPSIBLINGS, 0, L"xlFlashController", nullptr, (HMENU)ID_CONTROL_PANEL);
     Relayout();
     return 0;
 }
@@ -166,6 +167,23 @@ LRESULT FlashPlayer::OnCreate(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 LRESULT FlashPlayer::OnEraseBkgnd(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL &bHandled)
 {
     return TRUE;
+}
+
+LRESULT FlashPlayer::OnWindowPosChanging(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL &bHandled)
+{
+    WINDOWPOS *pPos = (WINDOWPOS *)lParam;
+    if ((pPos->flags & SWP_NOSIZE) == 0)
+    {
+        if (pPos->cx < XL_DPI_X(250))
+        {
+            pPos->cx = XL_DPI_X(250);
+        }
+        if (pPos->cy < XL_DPI_Y(250))
+        {
+            pPos->cy = XL_DPI_Y(250);
+        }
+    }
+    return 0;
 }
 
 LRESULT FlashPlayer::OnSize(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL &bHandled)

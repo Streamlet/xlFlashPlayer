@@ -30,7 +30,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE     hInstance,
         return FALSE;
     });
 
-    if (!fp.Create(nullptr, XL_DPI_X(0), XL_DPI_Y(0), XL_DPI_X(400), XL_DPI_Y(400), WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_SIZEBOX))
+    if (!fp.Create(nullptr, XL_DPI_X(0), XL_DPI_Y(0), XL_DPI_X(400), XL_DPI_Y(400), WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_SIZEBOX | WS_CLIPCHILDREN))
     {
         MessageBox(nullptr, L"程序初始化错误。\r\n\r\n本程序需要 Flash Player ActiveX 控件支持，如果您的系统中没有安装该控件，请先安装。", L"错误", MB_OK | MB_ICONEXCLAMATION);
         return 0;
