@@ -68,8 +68,8 @@ void ControlPanel::SetFrameInfo(int nFrameRate, int nFrameCount)
 {
     XL_LOG_INFO_FUNCTION();
 
-    m_nFrameRate = nFrameCount;
-    m_nFrameCount = nFrameRate;
+    m_nFrameRate = nFrameRate;
+    m_nFrameCount = nFrameCount;
 
     m_tbSlider.SetRange(0, m_nFrameCount);
     m_btnPlayPause.EnableWindow(m_nFrameCount > 0);
@@ -145,9 +145,10 @@ void ControlPanel::RefreshProgress()
 
     int nPos = m_tbSlider.GetPos();
     int nSecondPlayed = nPos * 256 / m_nFrameRate;
+    int nSecondTotal = m_nFrameCount * 256 / m_nFrameRate;
     WCHAR szTimePlayed[20] = {}, szTimeRemain[20] = {};
     swprintf_s(szTimePlayed, L"%02d:%02d:%02d", nSecondPlayed / 3600, nSecondPlayed % 3600 / 60, nSecondPlayed % 60);
-    swprintf_s(szTimeRemain, L"%02d:%02d:%02d", m_nFrameCount / 3600, m_nFrameCount % 3600 / 60, m_nFrameCount % 60);
+    swprintf_s(szTimeRemain, L"%02d:%02d:%02d", nSecondTotal / 3600, nSecondTotal % 3600 / 60, nSecondTotal % 60);
     m_lblTimePlayed.SetWindowText(szTimePlayed);
     m_lblTimeRemain.SetWindowText(szTimeRemain);
 }
@@ -298,7 +299,7 @@ LRESULT ControlPanel::OnSliderScroll(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM
     RefreshProgress();
 
     int nPos = m_tbSlider.GetPos();
-        WORD wSelfID = GetDlgCtrlID(m_hWnd);
+    WORD wSelfID = GetDlgCtrlID(m_hWnd);
     NMGotoFrame n = { { m_hWnd, wSelfID, CPNM_GOTO_FRAME }, (DWORD)nPos };
     ::SendMessage(m_hHost, WM_NOTIFY, wSelfID, (LPARAM)&n);
 
