@@ -12,6 +12,7 @@
 
 #include <Windows.h>
 #include <xl/Windows/GUI/xlDPI.h>
+#include <xl/AppHelper/xlCrashDumper.h>
 #include "FlashPlayer.h"
 #include "Log.h"
 
@@ -22,6 +23,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE     hInstance,
     _In_ int           nCmdShow)
 {
     XL_LOG_INFO_FUNCTION();
+    CrashDumper::Initialize();
 
     FlashPlayer fp;
 

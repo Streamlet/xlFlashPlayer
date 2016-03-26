@@ -110,7 +110,7 @@ void FlashPlayer::Unload()
     XL_LOG_INFO_FUNCTION();
 
     m_ControlPanel.SetFrameInfo(0, 0);
-    m_pFlashPlayer->put_Movie(nullptr);
+    m_pFlashPlayer->put_Movie(L"");
     m_strFile.Clear();
     m_szFlash = xl::Size(0, 0);
 }
