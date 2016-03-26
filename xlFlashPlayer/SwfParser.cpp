@@ -52,8 +52,8 @@ bool ParseSwfFile(const wchar_t *lpszFileName, SwfInfo &swf)
         return false;
     }
 
-    swf.Width = xl::BitValue::Eval<unsigned int, BYTE>(pRect.RawPointer(), 5 + nBits * 1, nBits) / 20;
-    swf.Height = xl::BitValue::Eval<unsigned int, BYTE>(pRect.RawPointer(), 5 + nBits * 3, nBits) / 20;
+    swf.Width = xl::BitValue::EvalT<unsigned int, BYTE>(pRect.RawPointer(), 5 + nBits * 1, nBits) / 20;
+    swf.Height = xl::BitValue::EvalT<unsigned int, BYTE>(pRect.RawPointer(), 5 + nBits * 3, nBits) / 20;
 
     if (!ReadFile(hFile, &swf.FrameRate, sizeof(unsigned short) * 2, &dwRead, nullptr) || dwRead != sizeof(unsigned short) * 2)
     {

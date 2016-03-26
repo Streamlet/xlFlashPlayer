@@ -32,7 +32,7 @@ FlashPlayer::FlashPlayer()
     XL_LOG_INFO_FUNCTION();
 
     AppendMsgHandler(WM_CREATE, MsgHandler(this, &FlashPlayer::OnCreate));
-    AppendMsgHandler(WM_ERASEBKGND, MsgHandler(this, &FlashPlayer::OnSize));
+    AppendMsgHandler(WM_ERASEBKGND, MsgHandler(this, &FlashPlayer::OnEraseBkgnd));
     AppendMsgHandler(WM_WINDOWPOSCHANGING, MsgHandler(this, &FlashPlayer::OnWindowPosChanging));
     AppendMsgHandler(WM_SIZE, MsgHandler(this, &FlashPlayer::OnSize));
 
