@@ -22,8 +22,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE     hInstance,
     _In_ LPWSTR        lpCmdLine,
     _In_ int           nCmdShow)
 {
+    xl::AppHelper::CrashDumper::Initialize();
+
     XL_LOG_INFO_FUNCTION();
-    CrashDumper::Initialize();
 
     FlashPlayer fp;
 
